@@ -21,6 +21,6 @@ class IndexController extends AbstractFOSRestController
      */
     public function getIndex()
     {
-        return $this->getViewHandler()->handle($this->view("Index"));
+        return $this->getViewHandler()->handle($this->view("Collect Index"));
     }
 }

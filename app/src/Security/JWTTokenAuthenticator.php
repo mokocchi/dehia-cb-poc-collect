@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -24,12 +25,14 @@ class JWTTokenAuthenticator extends AbstractGuardAuthenticator
     private $jwtEncoder;
     private $em;
     private $apiProblemResponseFactory;
+    private $logger;
 
-    public function __construct(JWTEncoderInterface $jwtEncoder, EntityManagerInterface $em,  ApiProblemResponseFactory $apiProblemResponseFactory)
+    public function __construct(JWTEncoderInterface $jwtEncoder, EntityManagerInterface $em,  ApiProblemResponseFactory $apiProblemResponseFactory, LoggerInterface $logger)
     {
         $this->jwtEncoder = $jwtEncoder;
         $this->em = $em;
         $this->apiProblemResponseFactory = $apiProblemResponseFactory;
+        $this->logger= $logger;
     }
 
     public function supports(Request $request)
@@ -69,7 +72,7 @@ class JWTTokenAuthenticator extends AbstractGuardAuthenticator
                     break;
             }
             throw new ApiProblemException(
-                new ApiProblem(Response::HTTP_BAD_REQUEST, $message, "Ocurrió un error en la autenticación")
+                new ApiProblem(Response::HTTP_BAD_REQUEST, $message, "There was an authentication error")
             );
         }
 

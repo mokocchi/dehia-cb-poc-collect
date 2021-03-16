@@ -5,35 +5,31 @@ namespace App\Controller\v1;
 use App\Entity\ResourceSwitch;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/collect-status")
+ * @Route("/entry")
  */
-class StatusController extends AbstractFOSRestController
+class EntryController extends AbstractFOSRestController
 {
-    private $logger;
-    public function __construct(LoggerInterface $logger){
-        $this->logger = $logger;
-    }
 
     /**
      * 
-     * @Rest\Get(name="collect_status")
+     * @Rest\Get(name="entries")
      * 
      * @return Response
      */
-    public function getStatus()
+    public function getResults()
     {
         $token = $this->getUser()->getToken();
         $em = $this->getDoctrine()->getManager();
         $switch = $em->getRepository(ResourceSwitch::class)->findBy(["token" => $token]);
+
         if(count($switch) === 0) {
-            return $this->getViewHandler()->handle($this->view(["status" => "OK"]));
+            return $this->getViewHandler()->handle($this->view(["results" => ["updated", "results"]]));
         } else {
-            return $this->getViewHandler()->handle($this->view(["status" => "SUSPENDED"]));
+            sleep(120);
         }
     }
 }
