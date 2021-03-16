@@ -1,12 +1,10 @@
 FROM php:7.4-apache as build-stage
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
 
 RUN pecl install apcu
 
 RUN apt-get update && \
 apt-get install -y \
-libzip-dev nano
+libzip-dev
 
 RUN docker-php-ext-install zip
 RUN docker-php-ext-enable apcu
