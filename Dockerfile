@@ -27,4 +27,4 @@ COPY --from=build-stage /var/www/ /var/www/app/
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx
