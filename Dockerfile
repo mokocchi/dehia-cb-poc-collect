@@ -26,4 +26,4 @@ RUN ["composer", "install", "--no-dev"]
 COPY start-apache.sh /tmp
 RUN chmod +x /tmp/start-apache.sh
 
-CMD ["/tmp/start-apache.sh"]
+CMD ["sh", "/tmp/start-apache.sh"]
