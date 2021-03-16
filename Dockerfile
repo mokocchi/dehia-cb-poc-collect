@@ -21,11 +21,9 @@ RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/
 
-RUN ["composer", "install"]
+RUN ["composer", "install", "--no-dev"]
 
 COPY start-apache.sh /tmp
 RUN chmod +x /tmp/start-apache.sh
-
-VOLUME [ "/var/www/" ]
 
 CMD ["/tmp/start-apache.sh"]
