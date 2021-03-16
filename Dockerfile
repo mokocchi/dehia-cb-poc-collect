@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:7.4-apache as build-stage
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
@@ -23,7 +23,10 @@ WORKDIR /var/www/
 
 RUN ["composer", "install", "--no-dev"]
 
-COPY start-apache.sh /var/www/script
-RUN chmod +x /var/www/script/tmp/start-apache.sh
+FROM nginx:alpine
 
-CMD ["/var/www/script/start-apache.sh"]
+COPY --from=build-stage /var/www/ /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
