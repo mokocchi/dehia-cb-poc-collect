@@ -142,11 +142,9 @@ RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`u
 
 WORKDIR /usr/share/nginx/app
 
-RUN ["/usr/share/nginx/app/bin/console", "doctrine:database:create"]
-RUN ["/usr/share/nginx/app/bin/console", "doctrine:migrations:migrate"]
-
 CMD ["/bin/sh", "-c", "php-fpm -D;\
     export dollar='$' realpath_root='$realpath_root' fastcgi_script_name='$fastcgi_script_name'\
     is_args='$is_args' args='$args' uri='$uri';\
     /usr/local/bin/envsubst < /etc/nginx/nginx.template > /etc/nginx/conf.d/default.conf;\
+    bin/console doctrine:datase:create; bin/console doctrine:migrations:migrate;\
     nginx -g 'daemon off;'"]
