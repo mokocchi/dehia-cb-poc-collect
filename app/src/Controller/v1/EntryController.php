@@ -2,6 +2,7 @@
 
 namespace App\Controller\v1;
 
+use App\Api\ApiProblem;
 use App\Entity\ResourceSwitch;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -29,7 +30,8 @@ class EntryController extends AbstractFOSRestController
         if(count($switch) === 0) {
             return $this->getViewHandler()->handle($this->view(["results" => ["updated", "results"]]));
         } else {
-            sleep(120);
+            sleep(10);
+            return $this->getViewHandler()->handle($this->view(new ApiProblem(503, "Service unavailable", "Service unavailable"),503));
         }
     }
 }
