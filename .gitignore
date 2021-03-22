@@ -1,2 +1,3 @@
 app/db/collect.sqlite
 app/.composer
+.env
