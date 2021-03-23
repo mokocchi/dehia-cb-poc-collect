@@ -26,7 +26,7 @@ If the Circuit Breaker is enabled, when the first request fails, the circuit "op
 ## Installation
 You can install the gateway either in containerized version using Docker or locally (on Linux) using PHP7.4 and Apache or NGINX.
 ### Docker (recommended)
- 1. Create an `.env` file based in `.env.dist` and an `app/.env.local` file based in `app/.env` (See [Environment Variables](#Environment-Variables))
+ 1. Create an `app/.env.local` file based in `app/.env` (See [Environment Variables](#Environment-Variables))
  2. If the results service or the gateway are also run with docker, take note of the docker network.
  3. Build the image: 
 
@@ -35,7 +35,7 @@ You can install the gateway either in containerized version using Docker or loca
  ```
  4. Run the container - Only if needed: a) Expose the port you set in the `.env` file (if the gateway or the results service aren't run with Docker) b) Use a Docker network (if the gateway or the results service are run with docker). If one is run with Docker and the not the other, you will need both.
  ```
- docker run --name <container-name> [-p <host-port>:<container-port>] [--network <poc-network>] <image-tag>
+ docker run -e PORT=<container-port> --name <container-name> [-p <host-port>:<container-port>] [--network <poc-network>] <image-tag>
  ```
  5. Go to `http://localhost:<host-port>`. You should see a "Collect Index" message.
  6. Now you can add the URL to the results service and the gateway.
@@ -144,9 +144,7 @@ sudo a2ensite collect && systemctl reload apache2
   8. Now you can add the URL to the results service and the gateway.
 
 # Environment Variables
-Docker variables go in the `.env` file. PHP variables go in the `app/.env.local` file.
-## Docker variables
-- **PORT**: the port in which the collect service will listen
+PHP variables go in the `app/.env.local` file.
 ## PHP variables
 - **JWT_SECRET**: symmetric key for signing the internal tokens (gateway <-> services). It must be the same in the gateway and the results service.
 
